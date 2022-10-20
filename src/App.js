@@ -7,9 +7,11 @@ import ButtonTime from './Component/ButtonTime';
 import { Play, Pause } from 'react-bootstrap-icons'
 function App() {
   const [start, setStart] = useState(false);
-  let [minutes, setMinutes] = useState(1);
-  let [seconds, setSeconds] = useState(5);
+  let [minutes, setMinutes] = useState(25);
+  let [seconds, setSeconds] = useState(0);
   let [duration, setDuration] = useState(0);
+  let [durationTime, setDurationTime] = useState(0);
+  let [notes, setNotes] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
   const [history, setHistory] = useState([]);
   localStorage.setItem('key', JSON.stringify(history));
@@ -27,7 +29,10 @@ function App() {
     }
     return number;
   }
-  const getThisFuckingDay = (date) => {
+  const onChangeNotes = (value) => {
+    setNotes(value)
+  }
+  const getDateDay = (date) => {
     let day = date.getDay();
     let month = date.getMonth() + 1;
     let time = date.toLocaleTimeString();
@@ -74,20 +79,21 @@ function App() {
     history.push({
       start: breakTime,
       duration: `${clock(minutes)}:${clock(seconds)}`,
-      notes: ""
+      notes: notes,
     });
   }
 
   const buttonTimer = () => {
     if (start) {
       setStart(false)
-      setMinutes(1)
-      setSeconds(5)
+      setMinutes(25)
+      setSeconds(0)
+      setNotes("")
     } else {
       if (!disabledButton) {
-        getThisFuckingDay(new Date())
         setStart(true);
-        setDuration(minutes)
+        getDateDay(new Date());
+        setDuration(minutes);
       }
     }
   }
@@ -102,10 +108,11 @@ function App() {
       }
       const interval = setInterval(() => {
         setSeconds(seconds - 1);
+        setDurationTime(durationTime + 1)
       }, 1000)
       return () => clearInterval(interval);
     }
-  }, [seconds, minutes, start])
+  }, [seconds, minutes, start, durationTime])
   useEffect(() => {
     if (minutes === 0) {
       return setDisabledButton(true);
@@ -126,6 +133,12 @@ function App() {
                 seconds={seconds}
                 clock={clock}
               />
+            </div>
+            <div className='mb-5'>
+              <label className='pe-2'>
+                Notes
+              </label>
+              <input value={notes} onChange={(e) => onChangeNotes(e.target.value)} type="text" />
             </div>
             <div className="d-flex justify-content-center">
               <ButtonTime addTime={addTime} tanda="+" />
@@ -149,7 +162,11 @@ function App() {
             <button>
               Delete Log
             </button>
-            <Table history={history} />
+            <Table
+              durationTime={durationTime}
+              history={history}
+              clock={clock}
+            />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-const Table = ({ history }) => {
+const Table = ({ history, durationTime, clock }) => {
   return (
     <table className='table' >
       <thead>
@@ -15,7 +15,7 @@ const Table = ({ history }) => {
             <tr>
               <td key={key}>{key + 1}</td>
               <td>{histo.start}</td>
-              <td>{histo.duration}</td>
+              <td>{`${clock(durationTime)} ${histo.duration}`}</td>
               <td>{histo.notes}</td>
             </tr>
           ))
