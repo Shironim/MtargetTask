@@ -9,6 +9,7 @@ const Table = ({ history }) => {
           <td>Started</td>
           <td>Duration</td>
           <td>Notes</td>
+          <td>apa ya</td>
         </tr>
       </thead>
       <tbody>
