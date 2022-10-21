@@ -1,4 +1,5 @@
-const Table = ({ history, durationTime, clock }) => {
+
+const Table = ({ logPomodoro }) => {
   return (
     <table className='table' >
       <thead>
@@ -11,12 +12,12 @@ const Table = ({ history, durationTime, clock }) => {
       </thead>
       <tbody>
         {
-          history && history.map((histo, key) => (
+          logPomodoro && logPomodoro.map((l, key) => (
             <tr>
               <td key={key}>{key + 1}</td>
-              <td>{histo.start}</td>
-              <td>{`${clock(durationTime)} ${histo.duration}`}</td>
-              <td>{histo.notes}</td>
+              <td>{l[0]}</td>
+              <td>{l[1]}</td>
+              <td>{l[2]}</td>
             </tr>
           ))
         }
